@@ -1,0 +1,13 @@
+@import './_variables.scss';
+
+@mixin random-border() {
+    border-color: rgb(random(255), random(255), random(255));
+}
+
+@mixin set-random-border() {
+    @for $i from 0 to $colors-number {
+        &:nth-child(#{$i}) {
+            @include random-border();
+        }
+    }
+}

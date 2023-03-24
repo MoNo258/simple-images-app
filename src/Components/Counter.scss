@@ -1,0 +1,21 @@
+@import '../styles/_variables.scss';
+
+.counter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 1em;
+    order: 1;
+
+    @media (min-width: 540px) {
+        order: 2;
+    }
+}
+
+.counter__copy {
+    font-weight: 400;
+}
+
+.counter__value {
+    font-weight: 600;
+}

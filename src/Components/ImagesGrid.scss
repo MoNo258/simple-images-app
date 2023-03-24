@@ -1,0 +1,28 @@
+@import '../styles/_variables.scss';
+@import '../styles/_mixins.scss';
+
+.image-grid {
+    @include set-random-border();
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1em;
+    order: 2;
+
+    @media (min-width: 540px) {
+        order: 1;
+    }
+}
+
+.image__disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.image__isLoading {
+    display: inline-block;
+    opacity: 1;
+    pointer-events: none;
+}

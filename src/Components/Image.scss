@@ -1,0 +1,28 @@
+@import '../styles/_mixins.scss';
+
+.image {
+    @include set-random-border();
+
+    display: flex;
+    border: 5px solid;
+    margin: .5em;
+}
+
+.image__object {
+    object-fit: fill;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.image__disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.image__isLoading {
+    display: inline-block;
+    opacity: 1;
+    pointer-events: none;
+}
