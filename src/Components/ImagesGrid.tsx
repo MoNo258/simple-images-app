@@ -4,17 +4,19 @@ import './ImagesGrid.scss';
 
 
 export type ImagesGridProps = {
-    imagesArray: IImage[];
+    numbersArray: number[];
     pictureWidth: number;
+    callback: (clicksNumber: number) => void;
+    resetEachPicture: boolean;
 };
 
-const ImagesGrid: React.FC<ImagesGridProps> = ({ imagesArray, pictureWidth }) => {
+const ImagesGrid: React.FC<ImagesGridProps> = ({ numbersArray, pictureWidth, callback, resetEachPicture }) => {
 
     return (
         <div className='image-grid'>
-            {imagesArray && imagesArray.map((image) => {
+            {numbersArray && numbersArray.map((number, i) => {
                 return (
-                    <Image key={image.id} image={image} pictureWidth={pictureWidth} />
+                    <Image key={`${i}${number}`} number={number} pictureWidth={pictureWidth} callback={callback} resetEachPicture={resetEachPicture} />
                 )
             })}
         </div>

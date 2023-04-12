@@ -8,7 +8,7 @@ export type CounterProps = {
 const Counter: React.FC<CounterProps> = ({ totalCounter }) => {
     return (
         <div className='counter'>
-            <p className='counter__copy'>Total counter: </p>
+            <p className='counter__copy'>Total counter:</p>
             <span className='counter__value'>{totalCounter}</span>
         </div>
     );

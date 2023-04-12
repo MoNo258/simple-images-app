@@ -1,8 +1,9 @@
 @import '../styles/_variables.scss';
 
 .counter {
+    width: 7.5rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin: 1em;
     order: 1;

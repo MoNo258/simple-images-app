@@ -1,43 +1,49 @@
 import * as React from "react";
-import { getSinglePicture } from "../Api";
 import { pictureClicksMax } from "../static/static.data";
 import './Image.scss';
 
 export type ImageProps = {
-    image: IImage;
+    number: number,
     pictureWidth: number;
+    callback: (clicksNumber: number) => void;
+    resetEachPicture: boolean;
 }
 
-export const ImageContext = React.createContext(0);
-
-const Image: React.FC<ImageProps> = ({ image, pictureWidth }) => {
-    const [picture, setPicture] = React.useState<IImage>(image);
-    const [randomId, setRandomId] = React.useState<number | null>(null);
+const Image: React.FC<ImageProps> = ({ number, pictureWidth, callback, resetEachPicture }) => {
+    const [picture, setPicture] = React.useState<string>('');
+    const [randomId, setRandomId] = React.useState<number | null>(number);
     const [picCounter, setPicCounter] = React.useState<number>(0);
     const [isMax, setIsMax] = React.useState<boolean>(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [increment, setIncrement] = React.useState(0);
 
     const pictureHeight = pictureWidth / 4 * 3;
-    const randomNumber = Math.floor(Math.random() * 1000);
+    const randomNumber = Math.floor(Math.random() * 100);
+    const imageSrc = `https://picsum.photos/id/${randomId}/300/200.jpg`;
     const loadingImage = 'https://cdn.pixabay.com/photo/2021/09/20/22/15/hourglass-6641967_960_720.png';
 
     React.useEffect(() => {
+        setPicture(imageSrc)
+    }, []);
+
+    React.useEffect(() => {
         randomId && setIsLoading(true);
-        randomId && getSinglePicture(randomId).then((data) => {
-            setPicture(data);
-        }).then(() => {
-            setIsLoading(false);
-        }).catch(error => {
-            setPicCounter(picCounter - 1);
-            alert(`Please try again`);
-            throw Error(error);
-        }).finally(() => {
-            setIsLoading(false);
-        });
+        randomId && setPicture(imageSrc);
+        setIsLoading(false);
     }, [randomId]);
 
     React.useEffect(() => {
+        if (resetEachPicture) {
+            setPicCounter(0);
+            setIsMax(false);
+            setIncrement(0);
+        }
+    }, [resetEachPicture]);
+
+    React.useEffect(() => {
         (picCounter === pictureClicksMax) && setIsMax(true);
+        setIncrement(1);
+        callback(increment);
     }, [picCounter]);
 
     const handleClick = () => {
@@ -48,14 +54,22 @@ const Image: React.FC<ImageProps> = ({ image, pictureWidth }) => {
     }
 
     return (
-        <ImageContext.Provider value={picCounter}>
-            <div className='image' data-piccounter={picCounter}>
-                {isLoading
-                    ? <img className='image__object image__isLoading' src={loadingImage} width={pictureWidth} height={pictureHeight} />
-                    : <img className={`image__object${isMax ? ' image__disabled' : ''}`} src={picture.download_url} width={pictureWidth} height={pictureHeight} onClick={handleClick} />
-                }
-            </div>
-        </ImageContext.Provider>
+        <div className='image'>
+            {isLoading
+                ? <img
+                    className='image__object image__isLoading'
+                    src={loadingImage}
+                    width={pictureWidth}
+                    height={pictureHeight} />
+                : <img
+                    className={`image__object${isMax ? ' image__disabled' : ''}`}
+                    src={picture}
+                    width={pictureWidth}
+                    height={pictureHeight}
+                    onClick={handleClick}
+                />
+            }
+        </div>
     );
 };
 
